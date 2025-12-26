@@ -42,6 +42,11 @@ global with sharing class HolidayGreetingGenerator {
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         //TODO FOR THE CHALLENGE : Make a callout to the external service using the Named Credential.
+
+        request.setEndpoint('callout:Holiday_Greeting_Service'+ '/api/greeting/generate');
+        request.setMethod('POST');
+        request.setHeader('Content-Type', 'application/json');
+        request.setTimeout(120000); 
         
         // Construct JSON body matching the HTTP callout structure
         Map<String, String> bodyMap = new Map<String, String>{
@@ -51,6 +56,8 @@ global with sharing class HolidayGreetingGenerator {
             'from' => fromName
         };
         //TODO FOR THE CHALLENGE : Add the serialized version of the above variable to the request body.
+
+        request.setBody(JSON.serialize(bodyMap));
 
         HttpResponse response = http.send(request);
         
